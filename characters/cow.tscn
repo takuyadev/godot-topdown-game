@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=3 uid="uid://ck2lqufx8xulb"]
+
+[ext_resource type="Script" path="res://characters/cow.gd" id="1_gvej4"]
+[ext_resource type="Texture2D" uid="uid://dw40jcjuv1fu5" path="res://art/Sprout Lands - Sprites - Basic pack/Characters/Free Cow Sprites.png" id="1_or7mo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_soyju"]
+size = Vector2(24, 13)
+
+[sub_resource type="Animation" id="Animation_gdoj5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+
+[sub_resource type="Animation" id="Animation_g8chg"]
+resource_name = "idle"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.7, 0.9, 1.7, 1.9, 2.1, 2.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 0, 1, 0, 2, 0, 2, 0]
+}
+
+[sub_resource type="Animation" id="Animation_b7p3u"]
+resource_name = "walk"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [3, 4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ejhx3"]
+_data = {
+"RESET": SubResource("Animation_gdoj5"),
+"idle": SubResource("Animation_g8chg"),
+"walk": SubResource("Animation_b7p3u")
+}
+
+[node name="Cow" type="CharacterBody2D"]
+z_index = 1
+script = ExtResource("1_gvej4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_or7mo")
+hframes = 3
+vframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 7.5)
+shape = SubResource("RectangleShape2D_soyju")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ejhx3")
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationPlayer"]
+libraries = {
+"": SubResource("AnimationLibrary_ejhx3")
+}
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
